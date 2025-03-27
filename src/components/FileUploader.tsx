@@ -1,3 +1,4 @@
+import React from 'react';
 import { ChangeEvent, useState } from "react";
 
 type UploadStatus = "idle" | "loading" | "success" | "error";
@@ -13,6 +14,16 @@ export default function FileUploader() {
         }
     }
 
+    function handleUpload() {
+        if (file) {
+            setStatus("loading");
+            // Simulate file upload
+            setTimeout(() => {
+                setStatus("success");
+            }, 2000);
+        }
+    }
+
     return (
         <div className="space-y-2">
             <input type="file" onChange={handleFileChange} />
@@ -23,7 +34,12 @@ export default function FileUploader() {
                 <p>file.type: {file.type}</p>
             </div>
         )}
-        {file && status !== "uploading" && <button>Upload</button>}
+        {file && status !== "loading" && (
+            <button onClick={handleUpload}>Upload</button>
+        )}
+        {status === "loading" && <p>Uploading...</p>}
+        {status === "success" && <p>Upload successful!</p>}
+        {status === "error" && <p>Upload failed. Please try again.</p>}
         </div>
     );
 }
